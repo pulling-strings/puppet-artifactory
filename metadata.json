@@ -1,0 +1,26 @@
+{
+  "name": "strings-nginx",
+  "version": "0.1.0",
+  "author": "Ronen Narkis",
+  "summary": "Artifactory setup and reverse proxy module",
+  "license": "Apache V2",
+  "source": "https://github.com/pullings-strings/puppet-artifactory.git",
+  "project_page": "http://github.com/pullings-strings/puppet-artifactory",
+  "issues_url": "https://github.com/pullings-strings/puppet-artifactory/issues",
+  "description": "A module for setting up and reverse proxing Artifactory",
+  "dependencies": [
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": ">= 3.0.0"
+    }, {
+      "name": "puppetlabs/apt",
+      "version_requirement": ">= 1.0.0"
+    }, {
+      "name": "jfryman/nginx",
+      "version_requirement": ">= 0.2.1"
+    }, {
+      "name": "camptocamp/archive",
+      "version_requirement": ">= 0.4.0"
+    }
+  ]
+}

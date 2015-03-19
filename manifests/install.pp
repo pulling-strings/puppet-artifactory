@@ -6,8 +6,7 @@ class artifactory::install {
     ensure  => present
   }
 
-  common::archive { "artifacory-${version}":
-    ensure           => present,
+  archive { "artifacory-${version}":
     url              => "${sourceforge}/artifactory/artifactory/${version}/artifactory-${version}.zip",
     digest_string    => 'c4056ba50a90c882880c838028d151b6',
     src_target       => '/opt',
@@ -24,7 +23,7 @@ class artifactory::install {
   exec{'install artifactory':
     command => "/usr/share/artifactory-${version}/bin/installService.sh",
     user    => 'root',
-    require => [Common::Archive["artifacory-${version}"],
+    require => [Archive["artifacory-${version}"],
                 Package['openjdk-7-jre']]
   }
 

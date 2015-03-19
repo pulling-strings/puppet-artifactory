@@ -1,0 +1,2 @@
+export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-`uname -i`
+export ARTIFACTORY_HOME=/usr/share/artifactory-2.6.6

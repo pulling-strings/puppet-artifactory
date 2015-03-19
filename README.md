@@ -1,6 +1,6 @@
 # Intro
 
-This module sets up artifactory, its tested to work on Ubuntu 14.10 (see [artifactory-sandbox](https://github.com/opskeleton/artifactory-sandbox)), it performs:
+This module sets up artifactory, tested to work on Ubuntu 14.10 (see [artifactory-sandbox](https://github.com/opskeleton/artifactory-sandbox)) it performs:
 
 * Artifactory install from zip file.
 * Nginx reverse proxy (for https access).

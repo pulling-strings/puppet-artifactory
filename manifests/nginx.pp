@@ -38,4 +38,8 @@ class artifactory::nginx(
     enable    => true,
     hasstatus => true,
   }
+
+  file{'/etc/nginx/sites-enabled/default':
+    ensure => absent
+  } ~> Service['nginx']
 }

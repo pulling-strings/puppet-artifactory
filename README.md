@@ -2,13 +2,20 @@
 
 This module sets up artifactory, tested to work on Ubuntu 14.10 (see [artifactory-sandbox](https://github.com/opskeleton/artifactory-sandbox)) it performs:
 
-* Artifactory install from zip file.
+* Artifactory install (either pro or oss).
 * Nginx reverse proxy (for https access).
 
 # Usage
 
 ```puppet
 include artifactory
+```
+Or for Pro:
+
+```puppet
+class{'artifactory':
+  pro => true
+}
 ```
 # Copyright and license
 

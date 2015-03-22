@@ -21,6 +21,9 @@
     }, {
       "name": "camptocamp/archive",
       "version_requirement": ">= 0.4.0"
+    }, {
+      "name": "attachmentgenie/ufw",
+      "version_requirement": ">= 1.4.9"
     }
   ]
 }

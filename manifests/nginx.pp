@@ -42,4 +42,16 @@ class artifactory::nginx(
   file{'/etc/nginx/sites-enabled/default':
     ensure => absent
   } ~> Service['nginx']
+
+  include ufw
+
+  ufw::allow { 'allow-ssh-from-all':
+      port => 22,
+  }
+
+  ufw::allow { 'allow-https-from-all':
+    from  => 'any',
+    port  => 443,
+    ip    => 'any'
+  }
 }

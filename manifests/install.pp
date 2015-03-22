@@ -1,19 +1,33 @@
 # installing artifactory
 class artifactory::install {
-  $version = '3.5.2'
+
+  $version = '3.5.3'
   $sourceforge = 'http://garr.dl.sourceforge.net/project'
+
   package{'unzip':
     ensure  => present
   }
 
-  archive { "artifacory-${version}":
-    url              => "${sourceforge}/artifactory/artifactory/${version}/artifactory-${version}.zip",
-    digest_string    => 'c4056ba50a90c882880c838028d151b6',
-    src_target       => '/opt',
-    target           => '/usr/share',
-    follow_redirects => true,
-    extension        => 'zip',
-    require          => Package['unzip'],
+  if($::artifactory::pro == false){
+    $install_path = "artifacory-${version}"
+    archive { "artifacory-${version}":
+      url              => "${sourceforge}/artifactory/artifactory/${version}/artifactory-${version}.zip",
+      digest_string    => '64bf5a16392512dd4c55c0bdf6702821',
+      src_target       => '/opt',
+      target           => '/usr/share',
+      follow_redirects => true,
+      extension        => 'zip',
+      require          => Package['unzip'],
+    } -> Exec['install artifactory']
+  } else {
+    $install_path = "artifactory-powerpack-${version}"
+    archive::extract{"artifactory-powerpack-standalone-${version}":
+      ensure     => present,
+      src_target => '/vagrant',
+      target     => '/usr/share',
+      extension  => 'zip',
+      require          => Package['unzip'],
+    } -> Exec['install artifactory']
   }
 
   package{'openjdk-7-jre':
@@ -21,10 +35,9 @@ class artifactory::install {
   }
 
   exec{'install artifactory':
-    command => "/usr/share/artifactory-${version}/bin/installService.sh",
+    command => "/usr/share/${install_path}/bin/installService.sh",
     user    => 'root',
-    require => [Archive["artifacory-${version}"],
-                Package['openjdk-7-jre']]
+    require => Package['openjdk-7-jre']
   }
 
   file{'/etc/artifactory/':

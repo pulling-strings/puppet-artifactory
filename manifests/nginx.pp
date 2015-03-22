@@ -50,7 +50,9 @@ class artifactory::nginx(
   }
 
   ufw::allow { 'allow-80':
-      port => 80,
+    from => 'any',
+    port => 80,
+    ip   => 'any'
   }
 
   ufw::allow { 'allow-https-from-all':

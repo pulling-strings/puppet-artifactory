@@ -1,26 +1,41 @@
 # Setting up reverse proxy as mentioned under 
-class artifactory::nginx {
+class artifactory::nginx(
+  $certdir = '/etc/nginx/ssl',
+  $key = "${::fqdn}.key",
+  $crt = "${::fqdn}.crt"
+) {
   
-  include ::nginx
-
-  nginx::resource::vhost { "${::hostname}-http":
-    ensure               => present,
-    client_max_body_size => '2048M',
-    access_log           => "/var/log/nginx/${::hostname}.access.log",
-    listen_port          => '80'
+  file{$certdir:
+    ensure => directory,
   }
 
-  nginx::resource::location { '/':
-    ensure             => present,
-    proxy              => 'http://localhost:8081',
-    vhost              => "${::hostname}-http",
-    proxy_set_header   => [
-      'Host $host:$server_port',
-      'X-Forwarded-For $proxy_add_x_forwarded_for',
-      'X-Real-IP $remote_addr'
-    ],
-    proxy_read_timeout => '90'
+  $key_gen = "openssl req -newkey rsa:2048 -nodes -keyout ${::fqdn}.key  -x509 -days 365 -out ${::fqdn}.crt -subj '/CN=${::fqdn}'"
 
+  $chipers = 'ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv3:+EXP'
+
+  exec {'create_self_signed_sslcert':
+    command => $key_gen,
+    cwd     => $certdir,
+    creates => [ "${certdir}/${::fqdn}.key", "${certdir}/${::fqdn}.crt", ],
+    path    => ['/usr/bin', '/usr/sbin']
+  } ~> Service['nginx']
+
+
+  package{'nginx':
+    ensure  => present
+  } ->
+
+  file { '/etc/nginx/sites-enabled/artifactory.conf':
+    ensure  => file,
+    mode    => '0644',
+    content => template('artifactory/artifactory.conf.erb'),
+    owner   => root,
+    group   => root,
+  } ->
+
+  service{'nginx':
+    ensure    => running,
+    enable    => true,
+    hasstatus => true,
   }
-
 }

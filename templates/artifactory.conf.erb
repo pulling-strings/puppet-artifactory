@@ -19,6 +19,7 @@ server {
   ssl_protocols SSLv3 TLSv1;
   ssl_ciphers ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv3:+EXP;
   ssl_prefer_server_ciphers on;
+  client_max_body_size 500M;
   
   location /artifactory {
     proxy_redirect off;

@@ -9,7 +9,7 @@ class artifactory::install {
   }
 
   if($::artifactory::pro == false){
-    $install_path = "artifacory-${version}"
+    $install_path = "artifactory-${version}"
     archive { "artifacory-${version}":
       url              => "${sourceforge}/artifactory/artifactory/${version}/artifactory-${version}.zip",
       digest_string    => '64bf5a16392512dd4c55c0bdf6702821',
